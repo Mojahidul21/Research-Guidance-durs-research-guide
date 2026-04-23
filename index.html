@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research Journey Guide — DURS Session Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #13161e;
+    --surface2: #1a1e28;
+    --border: #252b3a;
+    --accent: #e8c36a;
+    --accent2: #6ab4e8;
+    --accent3: #8ae86a;
+    --accent4: #e86ab4;
+    --text: #d4d8e8;
+    --text-muted: #7a82a0;
+    --text-dim: #4a5068;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* noise overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem 6rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 5rem 0 3rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4rem;
+  }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .hero-tag::after {
+    content: '';
+    flex: 1;
+    max-width: 60px;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.5;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    max-width: 520px;
+  }
+  .hero-sub strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .speaker-card {
+    margin-top: 2.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+  }
+  .speaker-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent) 0%, #c8942a 100%);
+    display: grid;
+    place-items: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .speaker-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: 0.2rem;
+  }
+  .speaker-detail {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    margin-bottom: 3.5rem;
+    animation: fadeUp 0.5s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(16px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+  .section:nth-child(1) { animation-delay: 0.05s; }
+  .section:nth-child(2) { animation-delay: 0.10s; }
+  .section:nth-child(3) { animation-delay: 0.15s; }
+  .section:nth-child(4) { animation-delay: 0.20s; }
+  .section:nth-child(5) { animation-delay: 0.25s; }
+  .section:nth-child(6) { animation-delay: 0.30s; }
+  .section:nth-child(7) { animation-delay: 0.35s; }
+  .section:nth-child(8) { animation-delay: 0.40s; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .section-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+  }
+  .section-line {
+    height: 1px;
+    background: var(--border);
+    flex: 1;
+  }
+  .section-accent-line {
+    height: 1px;
+    width: 24px;
+    flex-shrink: 0;
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.3rem;
+  }
+  .section-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+    font-style: italic;
+  }
+
+  /* cards grid */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem 1.3rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: #3a4060;
+  }
+  .card-icon {
+    font-size: 1.4rem;
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+  .card-title {
+    font-weight: 500;
+    color: #fff;
+    font-size: 0.95rem;
+    margin-bottom: 0.35rem;
+  }
+  .card-body {
+    font-size: 0.83rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .card-body strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* accent variants */
+  .accent-gold  { border-top: 2px solid var(--accent);  }
+  .accent-blue  { border-top: 2px solid var(--accent2); }
+  .accent-green { border-top: 2px solid var(--accent3); }
+  .accent-pink  { border-top: 2px solid var(--accent4); }
+
+  /* highlight box */
+  .highlight-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-left: 3px solid;
+    border-radius: 8px;
+    padding: 1.1rem 1.4rem;
+    margin-bottom: 1rem;
+    font-size: 0.88rem;
+    line-height: 1.65;
+  }
+  .hb-gold  { border-left-color: var(--accent);  }
+  .hb-blue  { border-left-color: var(--accent2); }
+  .hb-green { border-left-color: var(--accent3); }
+  .hb-pink  { border-left-color: var(--accent4); }
+
+  .highlight-box .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .hb-gold .label  { color: var(--accent);  }
+  .hb-blue .label  { color: var(--accent2); }
+  .hb-green .label { color: var(--accent3); }
+  .hb-pink .label  { color: var(--accent4); }
+
+  .highlight-box p { color: var(--text); }
+  .highlight-box ul { padding-left: 1.1rem; color: var(--text-muted); }
+  .highlight-box li { margin-bottom: 0.25rem; }
+  .highlight-box strong { color: #fff; font-weight: 500; }
+
+  /* timeline steps */
+  .steps {
+    position: relative;
+    padding-left: 1.8rem;
+  }
+  .steps::before {
+    content: '';
+    position: absolute;
+    left: 0.45rem;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    width: 1px;
+    background: var(--border);
+  }
+  .step {
+    position: relative;
+    margin-bottom: 1.2rem;
+  }
+  .step::before {
+    content: '';
+    position: absolute;
+    left: -1.425rem;
+    top: 0.45rem;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1px solid;
+    background: var(--bg);
+  }
+  .step-gold::before  { border-color: var(--accent);  }
+  .step-blue::before  { border-color: var(--accent2); }
+  .step-green::before { border-color: var(--accent3); }
+  .step-pink::before  { border-color: var(--accent4); }
+
+  .step-title {
+    font-weight: 500;
+    color: #fff;
+    font-size: 0.92rem;
+    margin-bottom: 0.2rem;
+  }
+  .step-body {
+    font-size: 0.83rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .step-body strong { color: var(--text); font-weight: 500; }
+
+  /* pill tags */
+  .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.8rem; }
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.05em;
+    padding: 0.2rem 0.65rem;
+    border-radius: 4px;
+    border: 1px solid;
+  }
+  .tag-gold  { color: var(--accent);  border-color: rgba(232,195,106,0.3); background: rgba(232,195,106,0.06); }
+  .tag-blue  { color: var(--accent2); border-color: rgba(106,180,232,0.3); background: rgba(106,180,232,0.06); }
+  .tag-green { color: var(--accent3); border-color: rgba(138,232,106,0.3); background: rgba(138,232,106,0.06); }
+  .tag-pink  { color: var(--accent4); border-color: rgba(232,106,180,0.3); background: rgba(232,106,180,0.06); }
+
+  /* warning/caution box */
+  .caution {
+    background: rgba(232,106,106,0.07);
+    border: 1px solid rgba(232,106,106,0.25);
+    border-left: 3px solid #e86a6a;
+    border-radius: 8px;
+    padding: 1.1rem 1.4rem;
+    font-size: 0.87rem;
+    color: var(--text);
+    margin-bottom: 1rem;
+  }
+  .caution .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #e86a6a;
+    margin-bottom: 0.4rem;
+  }
+
+  /* two-col */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  @media (max-width: 600px) {
+    .two-col { grid-template-columns: 1fr; }
+    .cards { grid-template-columns: 1fr; }
+    h1 { font-size: 2rem; }
+  }
+
+  /* inline mono */
+  code {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8em;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0.05em 0.35em;
+    color: var(--accent);
+  }
+
+  /* footer */
+  .footer {
+    margin-top: 5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  /* divider */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border) 30%, var(--border) 70%, transparent);
+    margin: 3rem 0;
+  }
+
+  /* scroll progress */
+  #progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: var(--accent);
+    width: 0%;
+    z-index: 999;
+    transition: width 0.1s linear;
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<div class="container">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-tag">DURS · Meet the Researcher · April 22, 2026</div>
+    <h1>The <em>Research Journey</em><br>Field Guide</h1>
+    <p class="hero-sub">
+      Compiled from the guest speaker session with <strong>Enayet Chowdhury</strong> —
+      a practical, honest map for aspiring researchers navigating academia,
+      publications, and graduate study abroad.
+    </p>
+
+    <div class="speaker-card">
+      <div class="speaker-icon">🎓</div>
+      <div>
+        <div class="speaker-name">Enayet Chowdhury</div>
+        <div class="speaker-detail">
+          Assistant Professor, Institute of Water &amp; Flood Management, BUET<br>
+          Graduate Research Assistant &amp; PhD Candidate, The University of Texas at Austin<br>
+          <em>Former part-time lecturer, Ahsanullah University</em>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- 1. MINDSET & CORE TRUTHS -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">01</span>
+      <div class="section-line"></div>
+      <div class="section-accent-line" style="background:var(--accent);"></div>
+    </div>
+    <h2>Mindset &amp; Core Truths</h2>
+    <p class="section-desc">What the speaker wants you to understand before anything else</p>
+
+    <div class="cards">
+      <div class="card accent-gold">
+        <span class="card-icon">📊</span>
+        <div class="card-title">CGPA ≠ Research Ability</div>
+        <div class="card-body">There is <strong>no direct relationship</strong> between your CGPA and your research capability. Professors and funding bodies care far more about what you have <em>done</em> than your GPA alone.</div>
+      </div>
+      <div class="card accent-gold">
+        <span class="card-icon">📅</span>
+        <div class="card-title">Last 2 Years Matter Most</div>
+        <div class="card-body">If your overall CGPA is average, your <strong>last two years' CGPA</strong> carries disproportionate weight — especially for European universities. Focus on an upward trend.</div>
+      </div>
+      <div class="card accent-gold">
+        <span class="card-icon">🔬</span>
+        <div class="card-title">Only Research Papers Fund PhDs</div>
+        <div class="card-body">For funded PhD positions, <strong>extra-curricular activities offer little advantage</strong>. Publications, thesis quality, and demonstrated research experience are what attract funding.</div>
+      </div>
+      <div class="card accent-gold">
+        <span class="card-icon">🌍</span>
+        <div class="card-title">Geography of Opportunity</div>
+        <div class="card-body"><strong>USA</strong> is highly competitive. <strong>Europe &amp; Australia</strong> are comparatively easier entry points for funded graduate research. Europe emphasises CGPA more; USA prioritises research output.</div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 2. UNDERSTANDING RESEARCH -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">02</span>
+      <div class="section-line"></div>
+      <div class="section-accent-line" style="background:var(--accent2);"></div>
+    </div>
+    <h2>Understanding Research</h2>
+    <p class="section-desc">What research actually is — before you try to do it</p>
+
+    <div class="highlight-box hb-blue">
+      <div class="label">Speaker's Research Area</div>
+      <p><strong>Compound Flooding</strong> — the intersection of 4 simultaneous factors (e.g., storm surge, rainfall, river flooding, sea-level rise). This is an example of <em>multi-variate, interdisciplinary research</em> — the kind that attracts serious academic attention.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card accent-blue">
+        <span class="card-icon">📄</span>
+        <div class="card-title">Types of Research Output</div>
+        <div class="card-body">
+          <strong>Journal Paper</strong> — long-form, peer-reviewed, highest impact.<br><br>
+          <strong>Conference Paper</strong> — 4–7 pages, a shorter precursor; presented at international conferences. Always given significant academic weight.<br><br>
+          <strong>Monograph</strong> — a book-length scholarly work on a single subject.
+        </div>
+      </div>
+      <div class="card accent-blue">
+        <span class="card-icon">🏆</span>
+        <div class="card-title">Journal Quality Tiers</div>
+        <div class="card-body">
+          Scientific journals are ranked <strong>Q1, Q2, Q3, Q4</strong> — Q1 being the most prestigious. Aim to publish in at least Q2 journals. Q1 publications are transformative for funding prospects.<br><br>
+          <strong>Open Access</strong> journals are freely readable but may charge an <strong>APC (Article Publishing Charge)</strong>, typically covered by your project/grant.
+        </div>
+      </div>
+      <div class="card accent-blue">
+        <span class="card-icon">✍️</span>
+        <div class="card-title">Author Order</div>
+        <div class="card-body">
+          <strong>First Author</strong> means you did the primary intellectual work — it carries enormous weight in academia.<br><br>
+          Agree on authorship order <strong>before</strong> the research begins to avoid conflict later. This is a professional norm.
+        </div>
+      </div>
+      <div class="card accent-blue">
+        <span class="card-icon">📈</span>
+        <div class="card-title">Citations</div>
+        <div class="card-body">Citation count matters for academic reputation and in some admission/funding contexts. Build a <strong>Google Scholar profile</strong> to track and showcase your citation impact.</div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 3. THE PAPER WRITING PROCESS -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">03</span>
+      <div class="section-line"></div>
+      <div class="section-accent-line" style="background:var(--accent3);"></div>
+    </div>
+    <h2>The Paper Writing Process</h2>
+    <p class="section-desc">From first draft to acceptance — what actually happens</p>
+
+    <div class="steps">
+      <div class="step step-green">
+        <div class="step-title">Write thesis &amp; paper simultaneously</div>
+        <div class="step-body">A key trick: don't finish your thesis, then write a paper. Do both in parallel — they reinforce each other and save enormous time.</div>
+      </div>
+      <div class="step step-green">
+        <div class="step-title">Abstract first — watch the YouTube video</div>
+        <div class="step-body">The speaker specifically recommended finding a YouTube tutorial on <strong>abstract writing</strong>. A well-written abstract is your paper's first impression for editors and reviewers.</div>
+      </div>
+      <div class="step step-green">
+        <div class="step-title">Submit → Desk Rejection</div>
+        <div class="step-body">Some papers are rejected immediately by editors without even going to review. This is called a <strong>desk rejection</strong> — usually due to scope mismatch or poor abstract quality.</div>
+      </div>
+      <div class="step step-green">
+        <div class="step-title">Getting Review Comments</div>
+        <div class="step-body">If it passes desk review, peer reviewers send back comments. This is progress — celebrate it.</div>
+      </div>
+      <div class="step step-green">
+        <div class="step-title">Major Revision / Rewrite</div>
+        <div class="step-body">Address every reviewer comment meticulously. Use tools like <strong>Flexfix</strong> (or similar rewriting software) to assist. Non-linear, quantified writing is preferred — avoid vague language.</div>
+      </div>
+      <div class="step step-green">
+        <div class="step-title">Acceptance</div>
+        <div class="step-body">Persistence pays. If you respond thoroughly to all comments, acceptance is very achievable. <em>"A paper will be accepted once, if you adhere."</em></div>
+      </div>
+    </div>
+
+    <div class="highlight-box hb-green" style="margin-top:1.2rem;">
+      <div class="label">Ethical Note</div>
+      <p>Any human subjects research requires an <strong>IRB permission certificate</strong> (Institutional Review Board / Ethical Review Board). This is standard internationally.</p>
+    </div>
+  </section>
+
+
+  <!-- 4. BUILDING RESEARCH EXPERIENCE -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">04</span>
+      <div class="section-line"></div>
+      <div class="section-accent-line" style="background:var(--accent4);"></div>
+    </div>
+    <h2>Building Research Experience</h2>
+    <p class="section-desc">How to gain credibility before you have a PhD</p>
+
+    <div class="cards">
+      <div class="card accent-pink">
+        <span class="card-icon">🏅</span>
+        <div class="card-title">Poster Competitions &amp; Presentations</div>
+        <div class="card-body">Start here. Join poster presentations and competitions at your institution or department. It is the most accessible first step into academic visibility.</div>
+      </div>
+      <div class="card accent-pink">
+        <span class="card-icon">🌐</span>
+        <div class="card-title">International Conferences</div>
+        <div class="card-body">International conference presentations carry <strong>disproportionately high weight</strong> in admissions. Track upcoming conferences — consider using an AI agent to monitor calls for papers.</div>
+      </div>
+      <div class="card accent-pink">
+        <span class="card-icon">📚</span>
+        <div class="card-title">Read Research Papers Constantly</div>
+        <div class="card-body">This is non-negotiable. Start with papers in your field. Use AI tools to accelerate comprehension. Talk to people who have published — learn how they think.</div>
+      </div>
+      <div class="card accent-pink">
+        <span class="card-icon">👥</span>
+        <div class="card-title">Find a Team &amp; Mentor</div>
+        <div class="card-body">Search for research clubs, teams, and teachers — even at other universities. A <strong>mentor</strong> who has published is invaluable. Senior students who have published are also excellent resources.</div>
+      </div>
+    </div>
+
+    <div class="highlight-box hb-pink" style="margin-top:1rem;">
+      <div class="label">Important Distinction</div>
+      <p><strong>Newspaper/media writing</strong> may help in general admissions but carries little weight in securing <em>professor-funded PhD positions</em>. Focus your effort on academic publications instead.</p>
+    </div>
+  </section>
+
+
+  <!-- 5. APPLYING TO GRAD SCHOOL -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">05</span>
+      <div class="section-line"></div>
+      <div class="section-accent-line" style="background:var(--accent);"></div>
+    </div>
+    <h2>Applying to Graduate School</h2>
+    <p class="section-desc">The strategic and tactical side of applications</p>
+
+    <div class="two-col">
+      <div>
+        <div class="highlight-box hb-gold">
+          <div class="label">University Selection Strategy</div>
+          <ul>
+            <li>Target <strong>10 universities</strong> in total</li>
+            <li><strong>4 reach</strong> (high-ranked, competitive)</li>
+            <li><strong>3 match</strong> (medium-ranked)</li>
+            <li><strong>3 safe</strong> (lower-ranked but fundable)</li>
+          </ul>
+        </div>
+
+        <div class="highlight-box hb-gold">
+          <div class="label">Language Tests</div>
+          <p>You typically need <em>one</em> of: <strong>TOEFL, IELTS, or Duolingo</strong>. Check each university's accepted tests and minimum scores. Requirements vary by institution and department.</p>
+        </div>
+      </div>
+      <div>
+        <div class="highlight-box hb-blue">
+          <div class="label">GRE — The Reality</div>
+          <p><strong>Not all universities or departments require GRE.</strong> Even a very high GRE score doesn't guarantee funding — it merely satisfies a threshold condition. Verify per department before investing heavily in GRE prep.</p>
+        </div>
+
+        <div class="highlight-box hb-blue">
+          <div class="label">Funding Seasonality (USA)</div>
+          <ul>
+            <li><strong>Fall semester:</strong> most funding available</li>
+            <li><strong>Spring semester:</strong> some funding available</li>
+            <li><strong>Summer:</strong> least funding — avoid applying for this entry</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-box hb-green">
+      <div class="label">What Helps You Get Funded?</div>
+      <ul>
+        <li>Published or submitted <strong>journal/conference papers</strong></li>
+        <li>A strong, relevant <strong>thesis</strong></li>
+        <li>Demonstrated research contribution aligned with the professor's work</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- 6. CONTACTING PROFESSORS -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">06</span>
+      <div class="section-line"></div>
+      <div class="section-accent-line" style="background:var(--accent3);"></div>
+    </div>
+    <h2>Contacting Professors</h2>
+    <p class="section-desc">The most important human step in the entire process</p>
+
+    <div class="highlight-box hb-green">
+      <div class="label">What to Include in Your Cold Email</div>
+      <ul>
+        <li><strong>What you have</strong> — skills, background, specific experience</li>
+        <li><strong>How you can contribute</strong> to <em>their specific research</em> (read their papers first)</li>
+        <li>Your <strong>unofficial transcript</strong></li>
+        <li>A <strong>2-page resume</strong> focused on research output</li>
+        <li>Link to your <strong>Google Scholar profile</strong> if you have publications</li>
+      </ul>
+    </div>
+
+    <div class="cards">
+      <div class="card accent-green">
+        <span class="card-icon">🔗</span>
+        <div class="card-title">Use Your Diaspora Network</div>
+        <div class="card-body">Search LinkedIn or Facebook for <strong>Bangladeshi researchers</strong> at your target university. Message them to ask whether a specific professor is currently accepting students — this insider intelligence is invaluable.</div>
+      </div>
+      <div class="card accent-green">
+        <span class="card-icon">📝</span>
+        <div class="card-title">Write Precisely and Quantifiably</div>
+        <div class="card-body">Use <strong>non-linear, quantified language</strong>. Instead of "I worked on water modeling," say "I developed a 2D hydrodynamic model of X basin covering 340 km²." Specificity signals a research mindset.</div>
+      </div>
+      <div class="card accent-green">
+        <span class="card-icon">🗃️</span>
+        <div class="card-title">Build a Professor Database</div>
+        <div class="card-body">Systematically track professors: name, university, research area, contact status, response. A spreadsheet/database approach prevents missed opportunities and shows professionalism.</div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 7. TOOLS & SKILLS -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">07</span>
+      <div class="section-line"></div>
+      <div class="section-accent-line" style="background:var(--accent2);"></div>
+    </div>
+    <h2>Essential Tools &amp; Skills</h2>
+    <p class="section-desc">The modern researcher's toolkit</p>
+
+    <div class="cards">
+      <div class="card accent-blue">
+        <span class="card-icon">🤖</span>
+        <div class="card-title">Use AI — Properly</div>
+        <div class="card-body">Use AI to <strong>read and summarise research papers</strong>, discover relevant literature, and assist in writing. Learn to use <strong>AI agents</strong> to track upcoming conferences and automate research monitoring.</div>
+      </div>
+      <div class="card accent-blue">
+        <span class="card-icon">🦾</span>
+        <div class="card-title">OpenClaw — Must Learn</div>
+        <div class="card-body">The speaker specifically emphasised learning <strong>OpenClaw</strong> (an open-source research/AI tool). Treat this as a priority skill to develop.</div>
+      </div>
+      <div class="card accent-blue">
+        <span class="card-icon">🎓</span>
+        <div class="card-title">Google Scholar Profile</div>
+        <div class="card-body">Create your profile now, even if you have no publications yet. Add your thesis, preprints, and any conference work. It is your academic identity online.</div>
+      </div>
+      <div class="card accent-blue">
+        <span class="card-icon">📡</span>
+        <div class="card-title">Networking</div>
+        <div class="card-body">Connect with teachers <em>at other universities</em>, join research clubs, attend talks, and engage with seniors who have published. Your network determines your access to opportunities.</div>
+      </div>
+    </div>
+
+    <div class="tags" style="margin-top:0.5rem;">
+      <span class="tag tag-blue">Google Scholar</span>
+      <span class="tag tag-blue">OpenClaw</span>
+      <span class="tag tag-blue">AI Agents</span>
+      <span class="tag tag-blue">LinkedIn</span>
+      <span class="tag tag-blue">Professor Database</span>
+      <span class="tag tag-blue">Reference Manager</span>
+      <span class="tag tag-blue">Flexfix</span>
+    </div>
+  </section>
+
+
+  <!-- 8. WARNINGS & PITFALLS -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">08</span>
+      <div class="section-line"></div>
+      <div class="section-accent-line" style="background:#e86a6a;"></div>
+    </div>
+    <h2>Warnings &amp; Pitfalls</h2>
+    <p class="section-desc">Things that waste your time or actively hurt you</p>
+
+    <div class="caution">
+      <div class="label">⚠ Fraud</div>
+      The speaker explicitly warned about fraudulent agents, admission consultancies, and fake funding offers. Always verify independently. Real funded PhD offers come directly from universities and professors — not middlemen.
+    </div>
+
+    <div class="caution">
+      <div class="label">⚠ GRE Over-investment</div>
+      Many applicants spend months on GRE prep for universities or departments that don't require it, or where a perfect score still doesn't guarantee funding. Check requirements per department before investing.
+    </div>
+
+    <div class="caution">
+      <div class="label">⚠ Extra-Curricular Over-Emphasis</div>
+      Student clubs, sports, volunteering — these are good for your character but will not secure you a funded PhD abroad. Research output is the only currency that counts.
+    </div>
+
+    <div class="caution">
+      <div class="label">⚠ Authorship Conflict</div>
+      Failing to agree on author order before beginning collaborative research is a common source of serious academic disputes. Have the conversation early and document it.
+    </div>
+  </section>
+
+
+  <!-- 9. LONG-TERM VISION -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">09</span>
+      <div class="section-line"></div>
+      <div class="section-accent-line" style="background:var(--accent);"></div>
+    </div>
+    <h2>Long-Term Vision</h2>
+    <p class="section-desc">Where the research path leads</p>
+
+    <div class="two-col">
+      <div class="highlight-box hb-gold">
+        <div class="label">Residency &amp; Immigration</div>
+        <p>Completing a PhD abroad — particularly in the <strong>USA or Europe</strong> — opens pathways to <strong>permanent residency (PR) and Green Card</strong> eligibility. Australia also offers clear pathways. Asian countries generally do not provide comparable immigration benefits for international researchers.</p>
+      </div>
+      <div class="highlight-box hb-gold">
+        <div class="label">The Compound Effect</div>
+        <p>Each paper, conference, and connection compounds. A thesis leads to a paper. A paper leads to a professor contact. A professor contact leads to funding. Funding leads to a PhD. A PhD leads to independence. <strong>Start anywhere. Start now.</strong></p>
+      </div>
+    </div>
+  </section>
+
+
+  <div class="divider"></div>
+
+  <!-- QUICK REFERENCE -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">—</span>
+      <div class="section-line"></div>
+    </div>
+    <h2>Quick Reference Checklist</h2>
+    <p class="section-desc">Your action items, in order of priority</p>
+
+    <div class="steps">
+      <div class="step step-gold"><div class="step-title">Create a Google Scholar profile today</div><div class="step-body">Add anything you have — thesis, coursework papers, anything.</div></div>
+      <div class="step step-gold"><div class="step-title">Read 2–3 papers in your target field per week</div><div class="step-body">Use AI to assist comprehension. Take notes in your own words.</div></div>
+      <div class="step step-gold"><div class="step-title">Find a mentor or a published senior</div><div class="step-body">Ask to collaborate, even on a small section of their work.</div></div>
+      <div class="step step-gold"><div class="step-title">Submit to a poster competition or local conference</div><div class="step-body">Any research output on your CV is better than none.</div></div>
+      <div class="step step-gold"><div class="step-title">Write thesis and paper in parallel</div><div class="step-body">Don't wait until the thesis is done to start the paper.</div></div>
+      <div class="step step-gold"><div class="step-title">Build a professor database</div><div class="step-body">Name, university, research area, email, contact status.</div></div>
+      <div class="step step-gold"><div class="step-title">Select 10 target universities (4/3/3 split)</div><div class="step-body">Research funding seasons; prefer Fall entry for USA.</div></div>
+      <div class="step step-gold"><div class="step-title">Learn OpenClaw &amp; AI agent tools</div><div class="step-body">These are explicitly recommended by the speaker as must-have skills.</div></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>DURS · Meet the Researcher Session · April 22, 2026</span>
+    <span>Speaker: Enayet Chowdhury · BUET &amp; UT Austin</span>
+  </footer>
+
+</div>
+
+<script>
+  // scroll progress bar
+  window.addEventListener('scroll', () => {
+    const el = document.getElementById('progress');
+    const total = document.body.scrollHeight - window.innerHeight;
+    el.style.width = (window.scrollY / total * 100) + '%';
+  });
+</script>
+</body>
+</html>
